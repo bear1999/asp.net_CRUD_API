@@ -8,7 +8,6 @@ E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\RestAPICrud.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\RestAPICrud.pdb
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\RestAPICrud.Views.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\RestAPICrud.Views.pdb
-E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.csprojAssemblyReference.cache
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.AssemblyInfoInputs.cache
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.AssemblyInfo.cs
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.csproj.CoreCompileInputs.cache
@@ -35,3 +34,4 @@ E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\Razor\Pages\_View
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.RazorTargetAssemblyInfo.cs
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.Views.pdb
+E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.csprojAssemblyReference.cache

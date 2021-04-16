@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "65DsJczfoaLqGW8OaH6uFw+xFY//QKTXK3Do7/5Zm2BPxlwoGJPgJZ3qbG4dTl8D/b+yick4o1N4ATDP3i89SA==",
+  "dgSpecHash": "YF+DrV2aa6im+ttUGyehTljHdvwKsZ1XenThe031fuXcX4cAiZUGm9pmHmOIlN4NANHDxf7YnztbVy+nWwNbsA==",
   "success": true,
   "projectFilePath": "E:\\Dev\\ASP.NET\\RestAPICrud\\RestAPICrud\\RestAPICrud.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.14\\microsoft.netcore.app.host.win-x64.3.1.14.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512"
+  ],
   "logs": []
 }

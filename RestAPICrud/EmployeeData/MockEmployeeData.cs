@@ -23,17 +23,21 @@ namespace RestAPICrud.EmployeeData
         };
         public Employee AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            employee.Id = Guid.NewGuid();
+            employees.Add(employee);
+            return employee;
         }
 
         public void DeleteEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            employees.Remove(employee);
         }
 
         public Employee EditEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            var existEmployee = GetEmployee(employee.Id);
+            existEmployee.Username = employee.Username;
+            return existEmployee;
         }
 
         public Employee GetEmployee(Guid id)

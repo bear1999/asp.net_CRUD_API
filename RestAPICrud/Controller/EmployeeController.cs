@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
+using RestAPICrud.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace RestAPICrud.Controller
 
         [HttpGet]
         [Route("api/[controller]/{id}")]
-        public IActionResult GetEmployees(Guid Id)
+        public IActionResult GetEmployee(Guid Id)
         {
             var employees = _employeeData.GetEmployee(Id);
             if (employees != null)
@@ -37,5 +38,40 @@ namespace RestAPICrud.Controller
             return NotFound($"Not found Employee with Id: {Id}");
         }
 
+        [HttpPost]
+        [Route("api/[controller]")]
+        public IActionResult AddEmployee(Employee employee)
+        {
+            _employeeData.AddEmployee(employee);
+            return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+        }
+
+        [HttpDelete]
+        [Route("api/[controller]/{id}")]
+        public IActionResult DeleteEmployee(Guid Id)
+        {
+            var employee = _employeeData.GetEmployee(Id);
+
+            if (employee != null)
+            {
+                _employeeData.DeleteEmployee(employee);
+                return Ok();
+            }
+            return NotFound($"Not found Employee with Id: {Id}");
+        }
+
+        [HttpPatch]
+        [Route("api/[controller]/{id}")]
+        public IActionResult EditEmployee(Guid Id, Employee employee)
+        {
+            var existEmployee = _employeeData.GetEmployee(Id);
+            if(existEmployee != null)
+            {
+                employee.Id = existEmployee.Id;
+                _employeeData.EditEmployee(employee);
+                return Ok();
+            }
+            return NotFound($"Not found Employee with Id: {Id}");
+        }
     }
 }
