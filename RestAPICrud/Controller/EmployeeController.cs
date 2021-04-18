@@ -68,8 +68,7 @@ namespace RestAPICrud.Controller
             if(existEmployee != null)
             {
                 employee.Id = existEmployee.Id;
-                _employeeData.EditEmployee(employee);
-                return Ok();
+                return Ok(_employeeData.EditEmployee(employee));
             }
             return NotFound($"Not found Employee with Id: {Id}");
         }
