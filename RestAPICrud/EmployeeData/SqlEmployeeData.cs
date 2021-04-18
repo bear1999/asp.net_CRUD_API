@@ -13,18 +13,18 @@ namespace RestAPICrud.EmployeeData
         {
             _employeeContext = employeeContext;
         }
-        public Employee AddEmployee(Employee employee)
+        public async Task<Employee> AddEmployee(Employee employee)
         {
             employee.Id = Guid.NewGuid();
-            _employeeContext.Employees.Add(employee);
-            _employeeContext.SaveChanges();
+            await _employeeContext.Employees.AddAsync(employee);
+            await _employeeContext.SaveChangesAsync();
             return employee;
         }
 
-        public void DeleteEmployee(Employee employee)
+        public async Task DeleteEmployee(Employee employee)
         {
             _employeeContext.Employees.Remove(employee);
-            _employeeContext.SaveChanges();
+            await _employeeContext.SaveChangesAsync();
         }
 
         public Employee EditEmployee(Employee employee)
@@ -39,13 +39,13 @@ namespace RestAPICrud.EmployeeData
             return employee;
         }
 
-        public Employee GetEmployee(Guid id)
+        public async Task<Employee> GetEmployee(Guid id)
         {
-            var employee = _employeeContext.Employees.Find(id);
+            var employee = await _employeeContext.Employees.FindAsync(id);
             return employee;
         }
 
-        public async Task <IEnumerable<Employee>> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
             return await _employeeContext.Employees.ToListAsync();
         }

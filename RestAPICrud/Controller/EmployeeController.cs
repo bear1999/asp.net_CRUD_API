@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestAPICrud.Controller
@@ -28,9 +26,9 @@ namespace RestAPICrud.Controller
 
         [HttpGet]
         [Route("api/[controller]/{id}")]
-        public IActionResult GetEmployee(Guid Id)
+        public async Task<IActionResult> GetEmployee(Guid Id)
         {
-            var employees = _employeeData.GetEmployee(Id);
+            var employees = await _employeeData.GetEmployee(Id);
             if (employees != null)
             {
                 return Ok(employees);
@@ -40,21 +38,21 @@ namespace RestAPICrud.Controller
 
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult AddEmployee(Employee employee)
+        public async Task<IActionResult> AddEmployee([FromForm] Employee employee)
         {
-            _employeeData.AddEmployee(employee);
+            await _employeeData.AddEmployee(employee);
             return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
         }
 
         [HttpDelete]
         [Route("api/[controller]/{id}")]
-        public IActionResult DeleteEmployee(Guid Id)
+        public async Task<IActionResult> DeleteEmployee(Guid Id)
         {
-            var employee = _employeeData.GetEmployee(Id);
+            var employee = await _employeeData.GetEmployee(Id);
 
             if (employee != null)
             {
-                _employeeData.DeleteEmployee(employee);
+                await _employeeData.DeleteEmployee(employee);
                 return Ok();
             }
             return NotFound($"Not found Employee with Id: {Id}");
@@ -62,9 +60,9 @@ namespace RestAPICrud.Controller
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public IActionResult EditEmployee(Guid Id, Employee employee)
+        public async Task<IActionResult> EditEmployee(Guid Id, Employee employee)
         {
-            var existEmployee = _employeeData.GetEmployee(Id);
+            var existEmployee = await _employeeData.GetEmployee(Id);
             if(existEmployee != null)
             {
                 employee.Id = existEmployee.Id;
