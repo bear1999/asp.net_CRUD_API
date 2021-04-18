@@ -1,7 +1,7 @@
-﻿using RestAPICrud.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestAPICrud.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
@@ -45,9 +45,9 @@ namespace RestAPICrud.EmployeeData
             return employee;
         }
 
-        public List<Employee> GetEmployees()
+        public async Task <IEnumerable<Employee>> GetEmployees()
         {
-            return _employeeContext.Employees.ToList();
+            return await _employeeContext.Employees.ToListAsync();
         }
     }
 }

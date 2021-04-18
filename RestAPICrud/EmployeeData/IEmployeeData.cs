@@ -1,12 +1,13 @@
 ﻿using RestAPICrud.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
 {
     public interface IEmployeeData
     {
-        List<Employee> GetEmployees();
+        Task <IEnumerable<Employee>> GetEmployees();
         Employee GetEmployee(Guid Id);
         Employee AddEmployee(Employee employee);
         Employee EditEmployee(Employee employee);

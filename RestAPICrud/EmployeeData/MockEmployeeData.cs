@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
 {
-    public class MockEmployeeData : IEmployeeData
+    public class MockEmployeeData //: IEmployeeData
     {
         private List<Employee> employees = new List<Employee>()
         {

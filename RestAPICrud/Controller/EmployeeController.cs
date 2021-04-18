@@ -21,9 +21,9 @@ namespace RestAPICrud.Controller
 
         [HttpGet]
         [Route("api/[controller]")]
-        public IActionResult GetEmployees()
+        public async Task<IActionResult> GetEmployees()
         {
-            return Ok(_employeeData.GetEmployees());
+            return Ok(await _employeeData.GetEmployees());
         }
 
         [HttpGet]
