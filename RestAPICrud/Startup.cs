@@ -29,7 +29,7 @@ namespace RestAPICrud
             //services.AddRazorPages();
             services.AddControllers();
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
-            services.AddScoped<IEmployeeData, SqlEmployeeData>();
+            services.AddScoped<IEmployeeData, EmpoyeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

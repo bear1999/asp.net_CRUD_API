@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace RestAPICrud.Controller
@@ -11,10 +13,12 @@ namespace RestAPICrud.Controller
     public class EmployeeController : ControllerBase
     {
         private IEmployeeData _employeeData;
+        private IWebHostEnvironment _hostEnvironment;
 
-        public EmployeeController(IEmployeeData employeeData)
+        public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
         {
             _employeeData = employeeData;
+            _hostEnvironment = environment;
         }
 
         [HttpGet]
@@ -38,10 +42,31 @@ namespace RestAPICrud.Controller
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> AddEmployee([FromForm] Employee employee)
+        public async Task<IActionResult> AddEmployee([FromForm] Employee employee, IFormFile profileImage)
         {
-            await _employeeData.AddEmployee(employee);
-            return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+            if (profileImage != null)
+            {
+                string extension = System.IO.Path.GetExtension(profileImage.FileName);
+                if (Equals(extension, ".png") || Equals(extension, ".jpg") || Equals(extension, ".jpge"))
+                {
+                    var filename = DateTime.Now.ToString("ddMMyyyyHHmmss") + Guid.NewGuid() + extension;
+                    var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", filename);
+                    if (System.IO.File.Exists(path))
+                        return BadRequest("File path is exist");
+                    else
+                    {
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await profileImage.CopyToAsync(fileStream);
+                        }
+                        employee.ProfileImage = filename;
+                        await _employeeData.AddEmployee(employee);
+                        return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+                    }
+                }
+            }
+            return BadRequest("File image is require");
+
         }
 
         [HttpDelete]
@@ -63,10 +88,10 @@ namespace RestAPICrud.Controller
         public async Task<IActionResult> EditEmployee(Guid Id, Employee employee)
         {
             var existEmployee = await _employeeData.GetEmployee(Id);
-            if(existEmployee != null)
+            if (existEmployee != null)
             {
                 employee.Id = existEmployee.Id;
-                return Ok(_employeeData.EditEmployee(employee));
+                return Ok(await _employeeData.EditEmployee(employee));
             }
             return NotFound($"Not found Employee with Id: {Id}");
         }

@@ -25,6 +25,11 @@ namespace RestAPICrud.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)

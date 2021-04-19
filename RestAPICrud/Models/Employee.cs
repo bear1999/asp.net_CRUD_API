@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace RestAPICrud.Models
         [Required]
         [MaxLength(50, ErrorMessage = "Username can only be 50 characters long")]
         public String Username { get; set; }
+        [MaxLength(100, ErrorMessage = "Max Length 100")]
+        public String ProfileImage { get; set; }
     }
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
 {
-    public class SqlEmployeeData : IEmployeeData
+    public class EmpoyeeRepository : IEmployeeData
     {
         private EmployeeContext _employeeContext;
-        public SqlEmployeeData(EmployeeContext employeeContext)
+        public EmpoyeeRepository(EmployeeContext employeeContext)
         {
             _employeeContext = employeeContext;
         }
@@ -27,14 +27,14 @@ namespace RestAPICrud.EmployeeData
             await _employeeContext.SaveChangesAsync();
         }
 
-        public Employee EditEmployee(Employee employee)
+        public async Task<Employee> EditEmployee(Employee employee)
         {
-            var existEmployee = _employeeContext.Employees.Find(employee.Id);
+            var existEmployee = await _employeeContext.Employees.FindAsync(employee.Id);
             if (existEmployee != null)
             {
                 existEmployee.Username = employee.Username;
                 _employeeContext.Employees.Update(existEmployee);
-                _employeeContext.SaveChanges();
+                await _employeeContext.SaveChangesAsync();
             }
             return employee;
         }
