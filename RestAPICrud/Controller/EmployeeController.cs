@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -14,6 +15,12 @@ namespace RestAPICrud.Controller
     {
         private IEmployeeData _employeeData;
         private IWebHostEnvironment _hostEnvironment;
+
+        [Required(ErrorMessage = "Image is require")]
+        //[FileExtensions(Extensions = "png,jpg,jpge")]
+        [DataType(DataType.Upload)]
+        [BindProperty]
+        public IFormFile fileImage { get; set; }
 
         public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
         {
@@ -42,31 +49,36 @@ namespace RestAPICrud.Controller
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> AddEmployee([FromForm] Employee employee, IFormFile profileImage)
+        public async Task<IActionResult> AddEmployee([FromForm] Employee employee)
         {
-            if (profileImage != null)
+            var image = uploadImage().Result;
+            if (image != null)
             {
-                string extension = System.IO.Path.GetExtension(profileImage.FileName);
-                if (Equals(extension, ".png") || Equals(extension, ".jpg") || Equals(extension, ".jpge"))
+                employee.ProfileImage = image;
+                await _employeeData.AddEmployee(employee);
+                return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+            }
+            return BadRequest("Image is require only .png, .jpg, .jpge");
+        }
+
+        [Route("api/[controller]")]
+        public async Task<string> uploadImage()
+        {
+            string extension = System.IO.Path.GetExtension(fileImage.FileName);
+            if (!Equals(extension, ".png") && !Equals(extension, ".jpge") && !Equals(extension, ".jpg"))
+                return null;
+            var filename = DateTime.Now.ToString("ddMMyyyyHHmmss") + Guid.NewGuid() + extension;
+            var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", filename);
+            if (System.IO.File.Exists(path))
+                return null;
+            else
+            {
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    var filename = DateTime.Now.ToString("ddMMyyyyHHmmss") + Guid.NewGuid() + extension;
-                    var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", filename);
-                    if (System.IO.File.Exists(path))
-                        return BadRequest("File path is exist");
-                    else
-                    {
-                        using (var fileStream = new FileStream(path, FileMode.Create))
-                        {
-                            await profileImage.CopyToAsync(fileStream);
-                        }
-                        employee.ProfileImage = filename;
-                        await _employeeData.AddEmployee(employee);
-                        return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
-                    }
+                    await fileImage.CopyToAsync(fileStream);
+                    return filename;
                 }
             }
-            return BadRequest("File image is require");
-
         }
 
         [HttpDelete]
