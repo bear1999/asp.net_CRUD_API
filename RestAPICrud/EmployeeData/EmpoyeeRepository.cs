@@ -49,5 +49,10 @@ namespace RestAPICrud.EmployeeData
         {
             return await _employeeContext.Employees.ToListAsync();
         }
+
+        public async Task<Employee> checkLogin(string username)
+        {
+            return await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Username == username);
+        }
     }
 }

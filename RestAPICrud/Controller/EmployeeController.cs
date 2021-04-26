@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
@@ -7,6 +8,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+
 
 namespace RestAPICrud.Controller
 {
@@ -22,12 +24,14 @@ namespace RestAPICrud.Controller
         [BindProperty]
         public IFormFile fileImage { get; set; }
 
+        //Contructor
         public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
         {
             _employeeData = employeeData;
             _hostEnvironment = environment;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> GetEmployees()

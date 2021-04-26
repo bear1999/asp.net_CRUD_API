@@ -77,3 +77,4 @@ E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win-x86\
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
