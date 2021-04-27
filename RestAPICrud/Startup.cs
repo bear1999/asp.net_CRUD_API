@@ -1,21 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using RestAPICrud.Controller;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RestAPICrud
 {
@@ -32,12 +26,14 @@ namespace RestAPICrud
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddRazorPages();
-            services.AddControllers();
+            //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
-            services.AddScoped<IEmployeeData, EmpoyeeRepository>();
+            //Add Empployee Service, Interface
+            services.AddScoped<IEmployeeData, EmployeeRepository>();
 
             services.AddAuthentication(x =>
             {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
@@ -54,6 +50,10 @@ namespace RestAPICrud
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("36a1a9edae54ba6772cc5a3c6a67d992"))
                 };
             });
+
+            services.AddControllers().AddNewtonsoftJson(options => //Json to Claims
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

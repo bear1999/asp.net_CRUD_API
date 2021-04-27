@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestAPICrud.Controller
 {
@@ -41,6 +42,7 @@ namespace RestAPICrud.Controller
                     Issuer = "NgocSy",
                     Audience = "NgocSy",
                     Subject = new ClaimsIdentity(new Claim[] {
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //Id of JWT
                         new Claim(ClaimTypes.Name, employee.Username),
                         new Claim("UserId", checkLogin.Id.ToString())
                     }),
@@ -50,7 +52,22 @@ namespace RestAPICrud.Controller
                 var token = tokenHandler.CreateToken(tokenDescripter);
                 return Ok(tokenHandler.WriteToken(token));
             }
-            return BadRequest("Fail login!");
+            return BadRequest(new { message = "Fail login!" });
+        }
+
+        [Authorize]
+        [HttpGet("api/[controller]")]
+        public IActionResult getValueToken()
+        {
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                //'()?' if NULL then return NULL else '?' not exist and value NULL then return Error
+                var value = claims.Where(x => x.Type == "UserId").FirstOrDefault()?.Value;
+                return Ok(new { message = value });
+            }
+            return NotFound();
         }
     }
 }

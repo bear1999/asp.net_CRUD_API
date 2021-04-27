@@ -18,7 +18,7 @@ namespace RestAPICrud.Controller
         private IEmployeeData _employeeData;
         private IWebHostEnvironment _hostEnvironment;
 
-        [Required(ErrorMessage = "Image is require")]
+        //[Required(ErrorMessage = "Image is require")]
         //[FileExtensions(Extensions = "png,jpg,jpge")]
         [DataType(DataType.Upload)]
         [BindProperty]
@@ -48,7 +48,7 @@ namespace RestAPICrud.Controller
             {
                 return Ok(employees);
             }
-            return NotFound($"Not found Employee with Id: {Id}");
+            return NotFound(new { message = $"Not found Employee with Id: {Id}" });
         }
 
         [HttpPost]
@@ -62,12 +62,13 @@ namespace RestAPICrud.Controller
                 await _employeeData.AddEmployee(employee);
                 return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
             }
-            return BadRequest("Image is require only .png, .jpg, .jpge");
+            return BadRequest(new { message = "Image is require And only extension .png, .jpg, .jpge" });
         }
 
         [Route("api/[controller]")]
         public async Task<string> uploadImage()
         {
+            if (fileImage == null) return null;
             string extension = System.IO.Path.GetExtension(fileImage.FileName);
             if (!Equals(extension, ".png") && !Equals(extension, ".jpge") && !Equals(extension, ".jpg"))
                 return null;
@@ -90,13 +91,12 @@ namespace RestAPICrud.Controller
         public async Task<IActionResult> DeleteEmployee(Guid Id)
         {
             var employee = await _employeeData.GetEmployee(Id);
-
             if (employee != null)
             {
                 await _employeeData.DeleteEmployee(employee);
-                return Ok();
+                return Ok(new { message = "Remove success!" });
             }
-            return NotFound($"Not found Employee with Id: {Id}");
+            return NotFound(new { message = $"Not found Employee with Id: {Id}" });
         }
 
         [HttpPatch]
@@ -109,7 +109,7 @@ namespace RestAPICrud.Controller
                 employee.Id = existEmployee.Id;
                 return Ok(await _employeeData.EditEmployee(employee));
             }
-            return NotFound($"Not found Employee with Id: {Id}");
+            return NotFound(new { message = $"Not found Employee with Id: {Id}" });
         }
     }
 }

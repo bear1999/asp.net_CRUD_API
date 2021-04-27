@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
 {
-    public class EmpoyeeRepository : IEmployeeData
+    public class EmployeeRepository : IEmployeeData
     {
         private EmployeeContext _employeeContext;
-        public EmpoyeeRepository(EmployeeContext employeeContext)
+        public EmployeeRepository(EmployeeContext employeeContext)
         {
             _employeeContext = employeeContext;
         }
@@ -41,8 +41,7 @@ namespace RestAPICrud.EmployeeData
 
         public async Task<Employee> GetEmployee(Guid id)
         {
-            var employee = await _employeeContext.Employees.FindAsync(id);
-            return employee;
+            return await _employeeContext.Employees.FindAsync(id);
         }
 
         public async Task<IEnumerable<Employee>> GetEmployees()
