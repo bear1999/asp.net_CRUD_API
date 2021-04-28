@@ -27,7 +27,7 @@ namespace RestAPICrud.Controller
         }
 
         [HttpPost("api/[controller]")]
-        public async Task<IActionResult> checkLogin(Employee employee)
+        public async Task<IActionResult> checkLogin(Employees employee)
         {
             var checkLogin = await _employeeData.checkLogin(employee.Username);
             if (checkLogin != null)
@@ -43,8 +43,8 @@ namespace RestAPICrud.Controller
                     Audience = "NgocSy",
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //Id of JWT
-                        new Claim(ClaimTypes.Name, employee.Username),
-                        new Claim("UserId", checkLogin.Id.ToString())
+                        new Claim(ClaimTypes.Name, checkLogin.Id.ToString()),
+                        new Claim(ClaimTypes.Role, checkLogin.IdRoleNavigation.NameRole.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = credentials

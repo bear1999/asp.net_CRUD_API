@@ -8,11 +8,11 @@ namespace RestAPICrud.EmployeeData
 {
     public interface IEmployeeData
     {
-        Task<IEnumerable<Employee>> GetEmployees();
-        Task<Employee> GetEmployee(Guid Id);
-        Task<Employee> AddEmployee(Employee employee);
-        Task<Employee> EditEmployee(Employee employee);
-        Task DeleteEmployee(Employee employee);
-        Task<Employee> checkLogin(string Username);
+        Task<IEnumerable<Employees>> GetEmployees();
+        Task<Employees> GetEmployee(Guid Id);
+        Task<Employees> AddEmployee(Employees employee);
+        Task<Employees> EditEmployee(Employees employee);
+        Task DeleteEmployee(Employees employee);
+        Task<Employees> checkLogin(string Username);
     }
 }

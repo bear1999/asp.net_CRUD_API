@@ -29,7 +29,7 @@ namespace RestAPICrud
             //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
             //Add Empployee Service, Interface
-            services.AddScoped<IEmployeeData, EmployeeRepository>();
+            services.AddScoped<IEmployeeData, EmployeeService>();
 
             services.AddAuthentication(x =>
             {
@@ -77,6 +77,7 @@ namespace RestAPICrud
 
             //For JWT
             app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

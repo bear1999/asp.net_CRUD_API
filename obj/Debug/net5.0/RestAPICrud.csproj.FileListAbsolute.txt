@@ -1,0 +1,5 @@
+E:\Dev\ASP.NET\RestAPICrud\obj\Debug\net5.0\RestAPICrud.csprojAssemblyReference.cache
+E:\Dev\ASP.NET\RestAPICrud\obj\Debug\net5.0\RestAPICrud.GeneratedMSBuildEditorConfig.editorconfig
+E:\Dev\ASP.NET\RestAPICrud\obj\Debug\net5.0\RestAPICrud.AssemblyInfoInputs.cache
+E:\Dev\ASP.NET\RestAPICrud\obj\Debug\net5.0\RestAPICrud.AssemblyInfo.cs
+E:\Dev\ASP.NET\RestAPICrud\obj\Debug\net5.0\RestAPICrud.csproj.CoreCompileInputs.cache

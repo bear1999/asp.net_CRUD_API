@@ -31,7 +31,6 @@ namespace RestAPICrud.Controller
             _hostEnvironment = environment;
         }
 
-        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> GetEmployees()
@@ -39,6 +38,7 @@ namespace RestAPICrud.Controller
             return Ok(await _employeeData.GetEmployees());
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetEmployee(Guid Id)
@@ -53,16 +53,23 @@ namespace RestAPICrud.Controller
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> AddEmployee([FromForm] Employee employee)
+        public async Task<IActionResult> AddEmployee([FromForm] Employees employee)
         {
-            var image = uploadImage().Result;
-            if (image != null)
+            try
             {
-                employee.ProfileImage = image;
-                await _employeeData.AddEmployee(employee);
-                return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+                var image = uploadImage().Result;
+                if (image != null)
+                {
+                    employee.ProfileImage = image;
+                    await _employeeData.AddEmployee(employee);
+                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
+                }
+                return BadRequest(new { message = "Image is require And only extension .png, .jpg, .jpge" });
             }
-            return BadRequest(new { message = "Image is require And only extension .png, .jpg, .jpge" });
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [Route("api/[controller]")]
@@ -101,7 +108,7 @@ namespace RestAPICrud.Controller
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public async Task<IActionResult> EditEmployee(Guid Id, Employee employee)
+        public async Task<IActionResult> EditEmployee(Guid Id, Employees employee)
         {
             var existEmployee = await _employeeData.GetEmployee(Id);
             if (existEmployee != null)
