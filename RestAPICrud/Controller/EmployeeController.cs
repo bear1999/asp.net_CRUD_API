@@ -71,7 +71,7 @@ namespace RestAPICrud.Controller
             }
         }
 
-        [Route("api/[controller]")]
+        [NonAction]
         public async Task<string> uploadImage()
         {
             if (fileImage == null) return null;
@@ -99,6 +99,9 @@ namespace RestAPICrud.Controller
             var employee = await _employeeData.GetEmployee(Id);
             if (employee != null)
             {
+                var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", employee.ProfileImage);
+                if(System.IO.File.Exists(path)) System.IO.File.Delete(path);
+
                 await _employeeData.DeleteEmployee(employee);
                 return Ok(new { message = "Remove success!" });
             }

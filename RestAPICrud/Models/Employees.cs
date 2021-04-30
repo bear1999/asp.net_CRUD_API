@@ -19,7 +19,6 @@ namespace RestAPICrud.Models
         [StringLength(100)]
         public string ProfileImage { get; set; }
         [Column("idRole")]
-        [Range(1, int.MaxValue, ErrorMessage = "idRole is require")]
         public int IdRole { get; set; }
         [Required]
         [StringLength(60)]

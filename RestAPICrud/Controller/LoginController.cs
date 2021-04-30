@@ -28,7 +28,7 @@ namespace RestAPICrud.Controller
         }
 
         [HttpPost("api/[controller]")]
-        public async Task<IActionResult> checkLogin(employeeLogin emp)
+        public async Task<IActionResult> checkLogin(resEmployeeLogin emp)
         {
             var checkLogin = await _employeeData.checkLogin(emp.Username);
             if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))

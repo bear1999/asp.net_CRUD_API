@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using System.Text;
+using FluentValidation.AspNetCore;
 
 namespace RestAPICrud
 {
@@ -25,6 +26,9 @@ namespace RestAPICrud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My Api", Version = "v1" });
+            });
             //services.AddRazorPages();
             //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
@@ -51,9 +55,14 @@ namespace RestAPICrud
                 };
             });
 
-            services.AddControllers().AddNewtonsoftJson(options => //Json to Claims
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddControllers()
+                .AddNewtonsoftJson(options => //Json to Claims
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddFluentValidation(x =>
+                {
+                    x.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    x.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,7 +86,7 @@ namespace RestAPICrud
 
             //For JWT
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -85,6 +94,12 @@ namespace RestAPICrud
                 //endpoints.MapRazorPages();
                 //For Controller
                 endpoints.MapDefaultControllerRoute();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }
