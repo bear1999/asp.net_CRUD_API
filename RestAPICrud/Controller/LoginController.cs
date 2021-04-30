@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using BC = BCrypt.Net.BCrypt;
 //Token
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +12,7 @@ using System.Security.Claims;
 using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using Microsoft.AspNetCore.Authorization;
+using RestAPICrud.Reponsitory;
 
 namespace RestAPICrud.Controller
 {
@@ -27,10 +28,10 @@ namespace RestAPICrud.Controller
         }
 
         [HttpPost("api/[controller]")]
-        public async Task<IActionResult> checkLogin(Employees employee)
+        public async Task<IActionResult> checkLogin(employeeLogin emp)
         {
-            var checkLogin = await _employeeData.checkLogin(employee.Username);
-            if (checkLogin != null)
+            var checkLogin = await _employeeData.checkLogin(emp.Username);
+            if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))
             {
                 string tokenKey = "36a1a9edae54ba6772cc5a3c6a67d992";
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -63,8 +64,7 @@ namespace RestAPICrud.Controller
             if (identity != null)
             {
                 IEnumerable<Claim> claims = identity.Claims;
-                //'()?' if NULL then return NULL else '?' not exist and value NULL then return Error
-                var value = claims.Where(x => x.Type == "UserId").FirstOrDefault()?.Value;
+                var value = claims.Where(x => x.Type == "UserId").FirstOrDefault()?.Value; // ? value allow null
                 return Ok(new { message = value });
             }
             return NotFound();

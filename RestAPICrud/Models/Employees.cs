@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -12,13 +13,20 @@ namespace RestAPICrud.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [Required(ErrorMessage = "Username is require")]
-        [MaxLength(50, ErrorMessage = "Username can only be 50 characters long")]
+        [Required]
+        [StringLength(50)]
         public string Username { get; set; }
-        [MaxLength(100, ErrorMessage = "Max Length 100")]
+        [StringLength(100)]
         public string ProfileImage { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Column("idRole")]
+        [Range(1, int.MaxValue, ErrorMessage = "idRole is require")]
         public int IdRole { get; set; }
+        [Required]
+        [StringLength(60)]
+        public string Password { get; set; }
+
+        [ForeignKey(nameof(IdRole))]
+        [InverseProperty(nameof(Roles.Employees))]
         public virtual Roles IdRoleNavigation { get; set; }
     }
 }

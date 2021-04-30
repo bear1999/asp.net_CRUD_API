@@ -8,7 +8,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-
+using BC = BCrypt.Net.BCrypt;
 
 namespace RestAPICrud.Controller
 {
@@ -18,8 +18,6 @@ namespace RestAPICrud.Controller
         private IEmployeeData _employeeData;
         private IWebHostEnvironment _hostEnvironment;
 
-        //[Required(ErrorMessage = "Image is require")]
-        //[FileExtensions(Extensions = "png,jpg,jpge")]
         [DataType(DataType.Upload)]
         [BindProperty]
         public IFormFile fileImage { get; set; }
@@ -61,6 +59,7 @@ namespace RestAPICrud.Controller
                 if (image != null)
                 {
                     employee.ProfileImage = image;
+                    employee.Password = BC.HashPassword(employee.Password);
                     await _employeeData.AddEmployee(employee);
                     return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
                 }

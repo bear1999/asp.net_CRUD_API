@@ -2,6 +2,7 @@
 using RestAPICrud.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestAPICrud.EmployeeData
@@ -41,17 +42,27 @@ namespace RestAPICrud.EmployeeData
 
         public async Task<Employees> GetEmployee(Guid id)
         {
-            return await _employeeContext.Employees.FindAsync(id);
+            var employee = await _employeeContext.Employees
+                .Include(x => x.IdRoleNavigation)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            employee.Password = null;
+            employee.IdRoleNavigation.Employees = null;
+            return employee;
         }
 
         public async Task<IEnumerable<Employees>> GetEmployees()
         {
-            return await _employeeContext.Employees.ToListAsync();
+            var employee = await _employeeContext.Employees
+                .Include(x => x.IdRoleNavigation)
+                .ToListAsync();
+            employee.ForEach(x => x.IdRoleNavigation.Employees = null);
+            employee.ForEach(x => x.Password = null);
+            return employee.ToList();
         }
 
         public async Task<Employees> checkLogin(string username)
         {
-            return await _employeeContext.Employees.Include(x => x.IdRoleNavigation).FirstOrDefaultAsync(x => x.Username == username);
+            return await _employeeContext.Employees.Include(x => x.IdRoleNavigation).SingleOrDefaultAsync(x => x.Username == username);
         }
     }
 }

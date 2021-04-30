@@ -13,6 +13,6 @@ namespace RestAPICrud.EmployeeData
         Task<Employees> AddEmployee(Employees employee);
         Task<Employees> EditEmployee(Employees employee);
         Task DeleteEmployee(Employees employee);
-        Task<Employees> checkLogin(string Username);
+        Task<Employees> checkLogin(string username);
     }
 }

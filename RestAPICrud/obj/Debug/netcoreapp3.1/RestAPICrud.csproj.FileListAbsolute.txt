@@ -163,3 +163,4 @@ E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win-x86\
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\RestAPICrud.MvcApplicationPartsAssemblyInfo.cs
+E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\BCrypt.Net-Next.dll

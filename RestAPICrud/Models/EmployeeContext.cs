@@ -24,31 +24,15 @@ namespace RestAPICrud.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.IdRole).HasColumnName("idRole");
-
-                entity.Property(e => e.ProfileImage).HasMaxLength(100);
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.Password)
+                    .IsUnicode(false)
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.IdRoleNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.IdRole)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_Roles");
-            });
-
-            modelBuilder.Entity<Roles>(entity =>
-            {
-                entity.HasKey(e => e.IdRole);
-
-                entity.Property(e => e.IdRole).HasColumnName("idRole");
-
-                entity.Property(e => e.NameRole)
-                    .IsRequired()
-                    .HasColumnName("name_role")
-                    .HasMaxLength(40);
             });
 
             OnModelCreatingPartial(modelBuilder);
