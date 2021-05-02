@@ -1,0 +1,3 @@
+Scaffold-DbContext "Server=.\SQLEXPRESS;user id=sa;password=123456;Database=EmployeeDB;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MyDbContext
+Scaffold-DbContext "Server=.\SQLEXPRESS;user id=sa;password=123456;Database=EmployeeDB;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context "EmployeeContext" -Force
+Scaffold-DbContext "Server=.\SQLEXPRESS;user id=sa;password=123456;Database=EmployeeDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context "EmployeeContext" -DataAnnotations

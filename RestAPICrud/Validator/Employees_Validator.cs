@@ -14,7 +14,6 @@ namespace RestAPICrud.SchemeValidator
             RuleFor(x => x.IdRole)
                 .NotEmpty()
                 .GreaterThan(0);
-            RuleFor(x => x.ProfileImage).NotEmpty();
         }
     }
 }

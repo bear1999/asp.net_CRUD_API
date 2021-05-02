@@ -10,7 +10,7 @@ namespace RestAPICrud.EmployeeData
     {
         Task<IEnumerable<Employees>> GetEmployees();
         Task<Employees> GetEmployee(Guid Id);
-        Task<Employees> AddEmployee(Employees employee);
+        Task<Employees> AddEmployee(Employees employee, EmployeesInfo empInfo);
         Task<Employees> EditEmployee(Employees employee);
         Task DeleteEmployee(Employees employee);
         Task<Employees> checkLogin(string username);

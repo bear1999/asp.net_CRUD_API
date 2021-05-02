@@ -27,7 +27,7 @@ namespace RestAPICrud
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen(options => {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My Api", Version = "v1" });
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "CRUD API", Version = "v1" });
             });
             //services.AddRazorPages();
             //Add Db Connect String
@@ -99,7 +99,7 @@ namespace RestAPICrud
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRUD API");
             });
         }
     }

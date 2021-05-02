@@ -2,13 +2,13 @@
 
 namespace RestAPICrud.Reponsitory
 {
-    public class resEmployeeLogin
+    public class EmployeeLoginObj
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class EmployeeLoginValidator : AbstractValidator<resEmployeeLogin>
+    public class EmployeeLoginValidator : AbstractValidator<EmployeeLoginObj>
     {
         public EmployeeLoginValidator()
         {

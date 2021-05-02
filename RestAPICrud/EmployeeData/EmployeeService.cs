@@ -14,10 +14,14 @@ namespace RestAPICrud.EmployeeData
         {
             _employeeContext = employeeContext;
         }
-        public async Task<Employees> AddEmployee(Employees employee)
+        public async Task<Employees> AddEmployee(Employees employee, EmployeesInfo empInfo)
         {
             employee.Id = Guid.NewGuid();
             await _employeeContext.Employees.AddAsync(employee);
+
+            empInfo.IdEmployee = employee.Id;
+            await _employeeContext.EmployeesInfo.AddAsync(empInfo);
+
             await _employeeContext.SaveChangesAsync();
             return employee;
         }
@@ -43,21 +47,21 @@ namespace RestAPICrud.EmployeeData
         public async Task<Employees> GetEmployee(Guid id)
         {
             var employee = await _employeeContext.Employees
-                .Include(x => x.IdRoleNavigation)
+                .Include(x => x.EmployeesInfo)
                 .FirstOrDefaultAsync(x => x.Id == id);
             employee.Password = null;
-            employee.IdRoleNavigation.Employees = null;
+            employee.IdRoleNavigation = null;
             return employee;
         }
 
         public async Task<IEnumerable<Employees>> GetEmployees()
         {
             var employee = await _employeeContext.Employees
-                .Include(x => x.IdRoleNavigation)
+                .Include(x => x.EmployeesInfo)
                 .ToListAsync();
-            employee.ForEach(x => x.IdRoleNavigation.Employees = null);
+            employee.ForEach(x => x.IdRoleNavigation = null);
             employee.ForEach(x => x.Password = null);
-            return employee.ToList();
+            return employee;
         }
 
         public async Task<Employees> checkLogin(string username)

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
+using RestAPICrud.Helper;
 using RestAPICrud.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
@@ -17,10 +17,6 @@ namespace RestAPICrud.Controller
     {
         private IEmployeeData _employeeData;
         private IWebHostEnvironment _hostEnvironment;
-
-        [DataType(DataType.Upload)]
-        [BindProperty]
-        public IFormFile fileImage { get; set; }
 
         //Contructor
         public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
@@ -51,44 +47,23 @@ namespace RestAPICrud.Controller
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> AddEmployee([FromForm] Employees employee)
+        public async Task<IActionResult> AddEmployee([FromForm] Employees employee, [FromForm] EmployeesInfo empInfo, IFormFile fileImage)
         {
             try
             {
-                var image = uploadImage().Result;
+                var image = new UploadFile(_hostEnvironment, fileImage).uploadImage().Result;
                 if (image != null)
                 {
                     employee.ProfileImage = image;
                     employee.Password = BC.HashPassword(employee.Password);
-                    await _employeeData.AddEmployee(employee);
+                    await _employeeData.AddEmployee(employee, empInfo);
                     return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
                 }
-                return BadRequest(new { message = "Image is require And only extension .png, .jpg, .jpge" });
+                return BadRequest(new { message = "fileImage require .png .jpg .jpge" });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [NonAction]
-        public async Task<string> uploadImage()
-        {
-            if (fileImage == null) return null;
-            string extension = System.IO.Path.GetExtension(fileImage.FileName);
-            if (!Equals(extension, ".png") && !Equals(extension, ".jpge") && !Equals(extension, ".jpg"))
-                return null;
-            var filename = DateTime.Now.ToString("ddMMyyyyHHmmss") + Guid.NewGuid() + extension;
-            var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", filename);
-            if (System.IO.File.Exists(path))
-                return null;
-            else
-            {
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await fileImage.CopyToAsync(fileStream);
-                    return filename;
-                }
             }
         }
 
@@ -100,7 +75,7 @@ namespace RestAPICrud.Controller
             if (employee != null)
             {
                 var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", employee.ProfileImage);
-                if(System.IO.File.Exists(path)) System.IO.File.Delete(path);
+                if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
 
                 await _employeeData.DeleteEmployee(employee);
                 return Ok(new { message = "Remove success!" });
