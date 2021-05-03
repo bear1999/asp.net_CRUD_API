@@ -32,16 +32,29 @@ namespace RestAPICrud.EmployeeData
             await _employeeContext.SaveChangesAsync();
         }
 
-        public async Task<Employees> EditEmployee(Employees employee)
+        public async Task<Employees> EditEmployee(Employees employee, EmployeesInfo empInfo)
         {
             var existEmployee = await _employeeContext.Employees.FindAsync(employee.Id);
             if (existEmployee != null)
             {
                 existEmployee.Username = employee.Username;
+                existEmployee.Password = employee.Password;
+                existEmployee.IdRole = employee.IdRole;
+                //Update Image Profile
+                if(employee.ProfileImage != null) existEmployee.ProfileImage = employee.ProfileImage;
+                //EmployeesInfo
+                existEmployee.EmployeesInfo.Fullname = empInfo.Fullname;
+                existEmployee.EmployeesInfo.Birthday = empInfo.Birthday;
+                existEmployee.EmployeesInfo.Address = empInfo.Address;
+                existEmployee.EmployeesInfo.PhoneNumber = empInfo.PhoneNumber;
+
                 _employeeContext.Employees.Update(existEmployee);
                 await _employeeContext.SaveChangesAsync();
+
+                //Reset
+                existEmployee.Password = null;
             }
-            return employee;
+            return existEmployee;
         }
 
         public async Task<Employees> GetEmployee(Guid id)

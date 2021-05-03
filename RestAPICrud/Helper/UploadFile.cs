@@ -12,10 +12,12 @@ namespace RestAPICrud.Helper
         private IWebHostEnvironment _hostEnvironment;
         [DataType(DataType.Upload)]
         private IFormFile fileImage;
+        private string _path;
 
-        public UploadFile(IWebHostEnvironment hostEnvironment, IFormFile fileImage)
+        public UploadFile(IWebHostEnvironment hostEnvironment, string _path, IFormFile fileImage)
         {
             this._hostEnvironment = hostEnvironment;
+            this._path = _path;
             this.fileImage = fileImage;
         }
 
@@ -26,7 +28,7 @@ namespace RestAPICrud.Helper
             if (!Equals(extension, ".png") && !Equals(extension, ".jpge") && !Equals(extension, ".jpg"))
                 return null;
             var filename = DateTime.Now.ToString("ddMMyyyy_") + Guid.NewGuid() + extension;
-            var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", filename);
+            var path = Path.Combine(_hostEnvironment.ContentRootPath, _path, filename);
             if (File.Exists(path))
                 return null;
             else

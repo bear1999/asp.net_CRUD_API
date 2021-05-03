@@ -51,7 +51,7 @@ namespace RestAPICrud.Controller
         {
             try
             {
-                var image = new UploadFile(_hostEnvironment, fileImage).uploadImage().Result;
+                var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).uploadImage().Result;
                 if (image != null)
                 {
                     employee.ProfileImage = image;
@@ -63,7 +63,7 @@ namespace RestAPICrud.Controller
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = ex.InnerException.Message });
             }
         }
 
@@ -85,15 +85,34 @@ namespace RestAPICrud.Controller
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public async Task<IActionResult> EditEmployee(Guid Id, Employees employee)
+        public async Task<IActionResult> EditEmployee(Guid Id, 
+            [FromForm] Employees employee, 
+            [FromForm] EmployeesInfo empInfo,
+            IFormFile fileImage)
         {
-            var existEmployee = await _employeeData.GetEmployee(Id);
-            if (existEmployee != null)
+            try
             {
-                employee.Id = existEmployee.Id;
-                return Ok(await _employeeData.EditEmployee(employee));
+                var existEmployee = await _employeeData.GetEmployee(Id);
+                if (existEmployee != null)
+                {
+                    employee.Id = existEmployee.Id;
+                    employee.Password = BC.HashPassword(employee.Password);
+                    //Change name Image
+                    var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).uploadImage().Result;
+                    if (image != null)
+                    {
+                        var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", existEmployee.ProfileImage);
+                        if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
+                        employee.ProfileImage = image;
+                    }
+                    return Ok(await _employeeData.EditEmployee(employee, empInfo));
+                }
+                return NotFound(new { message = $"Not found Employee with Id: {Id}" });
             }
-            return NotFound(new { message = $"Not found Employee with Id: {Id}" });
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.InnerException.Message });
+            }
         }
     }
 }
