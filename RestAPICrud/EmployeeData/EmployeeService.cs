@@ -9,7 +9,7 @@ namespace RestAPICrud.EmployeeData
 {
     public class EmployeeService : IEmployeeData
     {
-        private EmployeeContext _employeeContext;
+        private readonly EmployeeContext _employeeContext;
         public EmployeeService(EmployeeContext employeeContext)
         {
             _employeeContext = employeeContext;
@@ -77,7 +77,7 @@ namespace RestAPICrud.EmployeeData
             return employee;
         }
 
-        public async Task<Employees> checkLogin(string username)
+        public async Task<Employees> CheckLogin(string username)
         {
             return await _employeeContext.Employees.Include(x => x.IdRoleNavigation).SingleOrDefaultAsync(x => x.Username == username);
         }

@@ -171,3 +171,4 @@ E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\Microsoft.OpenApi
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\Dev\ASP.NET\RestAPICrud\RestAPICrud\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs

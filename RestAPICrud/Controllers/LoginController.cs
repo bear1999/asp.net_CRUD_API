@@ -10,16 +10,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using RestAPICrud.EmployeeData;
-using RestAPICrud.Models;
 using Microsoft.AspNetCore.Authorization;
 using RestAPICrud.Reponsitory;
 
-namespace RestAPICrud.Controller
+namespace RestAPICrud.Controllers
 {
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IEmployeeData _employeeData;
+        private readonly IEmployeeData _employeeData;
 
         //Contructor
         public LoginController(IEmployeeData employeeData)
@@ -28,9 +27,9 @@ namespace RestAPICrud.Controller
         }
 
         [HttpPost("api/[controller]")]
-        public async Task<IActionResult> checkLogin(obj_EmployeeLogin emp)
+        public async Task<IActionResult> CheckLogin(LoginRequest emp)
         {
-            var checkLogin = await _employeeData.checkLogin(emp.Username);
+            var checkLogin = await _employeeData.CheckLogin(emp.Username);
             if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))
             {
                 string tokenKey = "36a1a9edae54ba6772cc5a3c6a67d992";
@@ -58,10 +57,10 @@ namespace RestAPICrud.Controller
 
         [Authorize]
         [HttpGet("api/[controller]")]
-        public IActionResult getValueToken()
+        public IActionResult GetValueToken()
         {
-            var identity = User.Identity as ClaimsIdentity;
-            if (identity != null)
+            //var identity = User.Identity as ClaimsIdentity;
+            if (User.Identity is ClaimsIdentity identity)
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 var value = claims.Where(x => x.Type == "UserId").FirstOrDefault()?.Value; // ? value allow null

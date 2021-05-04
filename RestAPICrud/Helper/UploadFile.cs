@@ -9,10 +9,10 @@ namespace RestAPICrud.Helper
 {
     public class UploadFile
     {
-        private IWebHostEnvironment _hostEnvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
         [DataType(DataType.Upload)]
-        private IFormFile fileImage;
-        private string _path;
+        private readonly IFormFile fileImage;
+        private readonly string _path;
 
         public UploadFile(IWebHostEnvironment hostEnvironment, string _path, IFormFile fileImage)
         {
@@ -21,7 +21,7 @@ namespace RestAPICrud.Helper
             this.fileImage = fileImage;
         }
 
-        public async Task<string> uploadImage()
+        public async Task<string> UploadImage()
         {
             if (fileImage == null) return null;
             string extension = Path.GetExtension(fileImage.FileName);
@@ -33,11 +33,9 @@ namespace RestAPICrud.Helper
                 return null;
             else
             {
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await fileImage.CopyToAsync(fileStream);
-                    return filename;
-                }
+                using FileStream fileStream = new FileStream(path, FileMode.Create);
+                await fileImage.CopyToAsync(fileStream);
+                return filename;
             }
         }
     }

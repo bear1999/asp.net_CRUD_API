@@ -10,13 +10,13 @@ using System.IO;
 using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
 
-namespace RestAPICrud.Controller
+namespace RestAPICrud.Controllers
 {
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private IEmployeeData _employeeData;
-        private IWebHostEnvironment _hostEnvironment;
+        private readonly IEmployeeData _employeeData;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         //Contructor
         public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
@@ -51,7 +51,7 @@ namespace RestAPICrud.Controller
         {
             try
             {
-                var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).uploadImage().Result;
+                var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).UploadImage().Result;
                 if (image != null)
                 {
                     employee.ProfileImage = image;
@@ -98,7 +98,7 @@ namespace RestAPICrud.Controller
                     employee.Id = existEmployee.Id;
                     employee.Password = BC.HashPassword(employee.Password);
                     //Change name Image
-                    var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).uploadImage().Result;
+                    var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).UploadImage().Result;
                     if (image != null)
                     {
                         var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", existEmployee.ProfileImage);
