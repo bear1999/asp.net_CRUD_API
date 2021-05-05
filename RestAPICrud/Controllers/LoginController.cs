@@ -12,6 +12,8 @@ using System.Security.Claims;
 using RestAPICrud.EmployeeData;
 using Microsoft.AspNetCore.Authorization;
 using RestAPICrud.Reponsitory;
+using Microsoft.Extensions.Options;
+using RestAPICrud.Helpers;
 
 namespace RestAPICrud.Controllers
 {
@@ -19,11 +21,13 @@ namespace RestAPICrud.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IEmployeeData _employeeData;
+        private readonly AppSettings _appSettings;
 
         //Contructor
-        public LoginController(IEmployeeData employeeData)
+        public LoginController(IEmployeeData employeeData, IOptions<AppSettings> appSettings)
         {
             _employeeData = employeeData;
+            _appSettings = appSettings.Value;
         }
 
         [HttpPost("api/[controller]")]
@@ -32,7 +36,7 @@ namespace RestAPICrud.Controllers
             var checkLogin = await _employeeData.CheckLogin(emp.Username);
             if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))
             {
-                string tokenKey = "36a1a9edae54ba6772cc5a3c6a67d992";
+                string tokenKey = _appSettings.SerectKey;
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

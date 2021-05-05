@@ -11,6 +11,7 @@ using RestAPICrud.EmployeeData;
 using RestAPICrud.Models;
 using System.Text;
 using FluentValidation.AspNetCore;
+using RestAPICrud.Helpers;
 
 namespace RestAPICrud
 {
@@ -37,6 +38,12 @@ namespace RestAPICrud
             //Add Empployee Service, Interface
             services.AddScoped<IEmployeeData, EmployeeService>();
 
+            //Config appsettings.json
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.UTF8.GetBytes(appSettings.SerectKey);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,7 +60,7 @@ namespace RestAPICrud
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = "NgocSy",
                     ValidAudience = "NgocSy",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("36a1a9edae54ba6772cc5a3c6a67d992"))
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
 
