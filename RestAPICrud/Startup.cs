@@ -35,8 +35,10 @@ namespace RestAPICrud
             services.AddRazorPages();
             //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
+            
             //Add Empployee Service, Interface
             services.AddScoped<IEmployeeData, EmployeeService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             //Config appsettings.json
             var appSettingsSection = Configuration.GetSection("AppSettings");

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPICrud.EmployeeData;
-using RestAPICrud.Helper;
+using RestAPICrud.Helpers;
 using RestAPICrud.Models;
 using System;
 using System.IO;
@@ -17,12 +17,14 @@ namespace RestAPICrud.Controllers
     {
         private readonly IEmployeeData _employeeData;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IUploadFile _uploadFile;
 
         //Contructor
-        public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment)
+        public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment, IUploadFile upFile)
         {
             _employeeData = employeeData;
             _hostEnvironment = environment;
+            _uploadFile = upFile;
         }
 
         [HttpGet]

@@ -5,20 +5,24 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace RestAPICrud.Helper
+namespace RestAPICrud.Helpers
 {
-    public class UploadFile
+    public interface IUploadFile
+    {
+        Task<string> UploadImage();
+    }
+    public class UploadFile : IUploadFile
     {
         private readonly IWebHostEnvironment _hostEnvironment;
         [DataType(DataType.Upload)]
         private readonly IFormFile fileImage;
         private readonly string _path;
 
-        public UploadFile(IWebHostEnvironment hostEnvironment, string _path, IFormFile fileImage)
+        public UploadFile(IWebHostEnvironment hostEnvironment, string path, IFormFile _fileImage)
         {
-            this._hostEnvironment = hostEnvironment;
-            this._path = _path;
-            this.fileImage = fileImage;
+            _hostEnvironment = hostEnvironment;
+            _path = path;
+            fileImage = _fileImage;
         }
 
         public async Task<string> UploadImage()
