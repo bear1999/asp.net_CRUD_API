@@ -26,8 +26,9 @@ namespace RestAPICrud.EmployeeData
             return employee;
         }
 
-        public async Task DeleteEmployee(Employees employee)
+        public async Task DeleteEmployee(Employees employee, EmployeesInfo empInfo)
         {
+            _employeeContext.EmployeesInfo.Remove(empInfo);
             _employeeContext.Employees.Remove(employee);
             await _employeeContext.SaveChangesAsync();
         }
@@ -62,8 +63,11 @@ namespace RestAPICrud.EmployeeData
             var employee = await _employeeContext.Employees
                 .Include(x => x.EmployeesInfo)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            employee.Password = null;
-            employee.IdRoleNavigation = null;
+            if (employee != null)
+            {
+                employee.Password = null;
+                employee.IdRoleNavigation = null;
+            }
             return employee;
         }
 
@@ -72,8 +76,11 @@ namespace RestAPICrud.EmployeeData
             var employee = await _employeeContext.Employees
                 .Include(x => x.EmployeesInfo)
                 .ToListAsync();
-            employee.ForEach(x => x.IdRoleNavigation = null);
-            employee.ForEach(x => x.Password = null);
+            if (employee != null)
+            {
+                employee.ForEach(x => x.IdRoleNavigation = null);
+                employee.ForEach(x => x.Password = null);
+            }
             return employee;
         }
 

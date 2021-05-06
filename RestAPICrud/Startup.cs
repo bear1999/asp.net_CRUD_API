@@ -39,16 +39,17 @@ namespace RestAPICrud
             //Add Empployee Service, Interface
             services.AddScoped<IEmployeeData, EmployeeService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUploadFile, UploadFile>();
 
             //Config appsettings.json
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.UTF8.GetBytes(appSettings.SerectKey);
 
             services.AddAuthentication(x =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>

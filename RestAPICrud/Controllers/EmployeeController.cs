@@ -53,7 +53,7 @@ namespace RestAPICrud.Controllers
         {
             try
             {
-                var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).UploadImage().Result;
+                var image = _uploadFile.UploadImage(_hostEnvironment, "Assets/ProfileImage/", fileImage).Result;
                 if (image != null)
                 {
                     employee.ProfileImage = image;
@@ -79,7 +79,7 @@ namespace RestAPICrud.Controllers
                 var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", employee.ProfileImage);
                 if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
 
-                await _employeeData.DeleteEmployee(employee);
+                await _employeeData.DeleteEmployee(employee, employee.EmployeesInfo);
                 return Ok(new { message = "Remove success!" });
             }
             return NotFound(new { message = $"Not found Employee with Id: {Id}" });
@@ -100,7 +100,7 @@ namespace RestAPICrud.Controllers
                     employee.Id = existEmployee.Id;
                     employee.Password = BC.HashPassword(employee.Password);
                     //Change name Image
-                    var image = new UploadFile(_hostEnvironment, "Assets/ProfileImage/", fileImage).UploadImage().Result;
+                    var image = _uploadFile.UploadImage(_hostEnvironment, "Assets/ProfileImage/", fileImage).Result;
                     if (image != null)
                     {
                         var path = Path.Combine(_hostEnvironment.ContentRootPath, "Assets/ProfileImage/", existEmployee.ProfileImage);

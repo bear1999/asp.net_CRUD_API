@@ -12,7 +12,7 @@ namespace RestAPICrud.EmployeeData
         Task<Employees> GetEmployee(Guid Id);
         Task<Employees> AddEmployee(Employees employee, EmployeesInfo empInfo);
         Task<Employees> EditEmployee(Employees employee, EmployeesInfo empInfo);
-        Task DeleteEmployee(Employees employee);
+        Task DeleteEmployee(Employees employee, EmployeesInfo empInfo);
         Task<Employees> CheckLogin(string username);
     }
 }
