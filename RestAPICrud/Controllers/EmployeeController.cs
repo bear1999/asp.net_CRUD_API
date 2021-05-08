@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestAPICrud.EmployeeData;
+using RestAPICrud.Servcies.Employee;
 using RestAPICrud.Helpers;
 using RestAPICrud.Models;
 using System;
@@ -15,12 +15,12 @@ namespace RestAPICrud.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeData _employeeData;
+        private readonly IEmployeeService _employeeData;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IUploadFile _uploadFile;
 
         //Contructor
-        public EmployeeController(IEmployeeData employeeData, IWebHostEnvironment environment, IUploadFile upFile)
+        public EmployeeController(IEmployeeService employeeData, IWebHostEnvironment environment, IUploadFile upFile)
         {
             _employeeData = employeeData;
             _hostEnvironment = environment;
@@ -34,7 +34,7 @@ namespace RestAPICrud.Controllers
             return Ok(await _employeeData.GetEmployees());
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetEmployee(Guid Id)

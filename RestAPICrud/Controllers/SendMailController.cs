@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestAPICrud.Helpers;
-using RestAPICrud.Requests;
+using RestAPICrud.ViewModels;
 
 namespace RestAPICrud.Controllers
 {
@@ -20,7 +20,7 @@ namespace RestAPICrud.Controllers
         }
 
         [HttpPost("api/[controller]")]
-        public IActionResult SendMail(SendMailRequest emailR)
+        public IActionResult SendMail(SendMailViewModel emailR)
         {
             try
             {

@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 
-namespace RestAPICrud.Requests
+namespace RestAPICrud.ViewModels
 {
-    public class SendMailRequest
+    public class SendMailViewModel
     {
         public string from { get; set; }
         public string to { get; set; }
         public string subject { get; set; }
         public string html { get; set; }
     }
-    public class SendMailRequestValidator : AbstractValidator<SendMailRequest>
+    public class SendMailRequestValidator : AbstractValidator<SendMailViewModel>
     {
         public SendMailRequestValidator()
         {

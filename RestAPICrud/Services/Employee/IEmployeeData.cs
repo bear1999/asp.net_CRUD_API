@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RestAPICrud.EmployeeData
+namespace RestAPICrud.Servcies.Employee
 {
-    public interface IEmployeeData
+    public interface IEmployeeService
     {
         Task<IEnumerable<Employees>> GetEmployees();
         Task<Employees> GetEmployee(Guid Id);

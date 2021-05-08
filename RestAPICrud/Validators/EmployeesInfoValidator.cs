@@ -3,9 +3,9 @@ using RestAPICrud.Models;
 
 namespace RestAPICrud.Validator
 {
-    public class EmployeesInfo_Validator : AbstractValidator<EmployeesInfo>
+    public class EmployeesInfoValidator : AbstractValidator<EmployeesInfo>
     {
-        public EmployeesInfo_Validator()
+        public EmployeesInfoValidator()
         {
             RuleFor(x => x.IdEmployee);
             RuleFor(x => x.Fullname)

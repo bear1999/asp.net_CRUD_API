@@ -23,9 +23,15 @@ namespace RestAPICrud.Models
         {
             modelBuilder.Entity<Employees>(entity =>
             {
+                entity.HasIndex(e => e.Username)
+                    .HasName("UNIQUE_Username")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.IdRole).HasColumnName("idRole");
+
+                entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
                 entity.Property(e => e.Password)
                     .IsRequired()

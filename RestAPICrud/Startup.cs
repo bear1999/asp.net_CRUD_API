@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using RestAPICrud.EmployeeData;
+using RestAPICrud.Servcies.Employee;
 using RestAPICrud.Models;
 using System.Text;
 using FluentValidation.AspNetCore;
@@ -23,6 +23,7 @@ namespace RestAPICrud
         }
 
         public IConfiguration Configuration { get; }
+        //private readonly ICustomAuthorize _customAuthorize;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,9 +36,9 @@ namespace RestAPICrud
             services.AddRazorPages();
             //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
-            
+
             //Add Empployee Service, Interface
-            services.AddScoped<IEmployeeData, EmployeeService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUploadFile, UploadFile>();
 
@@ -47,6 +48,12 @@ namespace RestAPICrud
 
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.UTF8.GetBytes(appSettings.SerectKey);
+
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy("Staff", policy =>
+                    policy.RequireRole("Admin", "User"));
+            });
 
             services.AddAuthentication(x =>
             {

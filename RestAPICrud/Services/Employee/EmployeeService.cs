@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RestAPICrud.EmployeeData
+namespace RestAPICrud.Servcies.Employee
 {
-    public class EmployeeService : IEmployeeData
+    public class EmployeeService : IEmployeeService
     {
         private readonly EmployeeContext _employeeContext;
         public EmployeeService(EmployeeContext employeeContext)
@@ -52,7 +52,7 @@ namespace RestAPICrud.EmployeeData
                 _employeeContext.Employees.Update(existEmployee);
                 await _employeeContext.SaveChangesAsync();
 
-                //Reset
+                //Don't show password
                 existEmployee.Password = null;
             }
             return existEmployee;

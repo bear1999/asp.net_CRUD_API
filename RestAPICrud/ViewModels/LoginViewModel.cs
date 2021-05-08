@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
 
-namespace RestAPICrud.Reponsitory
+namespace RestAPICrud.ViewModels
 {
-    public class LoginRequest
+    public class LoginViewModel
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class EmployeeLoginValidator : AbstractValidator<LoginRequest>
+    public class EmployeeLoginValidator : AbstractValidator<LoginViewModel>
     {
         public EmployeeLoginValidator()
         {

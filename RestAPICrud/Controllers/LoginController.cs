@@ -9,9 +9,9 @@ using BC = BCrypt.Net.BCrypt;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using RestAPICrud.EmployeeData;
+using RestAPICrud.Servcies.Employee;
 using Microsoft.AspNetCore.Authorization;
-using RestAPICrud.Reponsitory;
+using RestAPICrud.ViewModels;
 using Microsoft.Extensions.Options;
 using RestAPICrud.Helpers;
 
@@ -20,18 +20,18 @@ namespace RestAPICrud.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IEmployeeData _employeeData;
+        private readonly IEmployeeService _employeeData;
         private readonly AppSettings _appSettings;
 
         //Contructor
-        public LoginController(IEmployeeData employeeData, IOptions<AppSettings> appSettings)
+        public LoginController(IEmployeeService employeeData, IOptions<AppSettings> appSettings)
         {
             _employeeData = employeeData;
             _appSettings = appSettings.Value;
         }
 
         [HttpPost("api/[controller]")]
-        public async Task<IActionResult> CheckLogin(LoginRequest emp)
+        public async Task<IActionResult> CheckLogin(LoginViewModel emp)
         {
             var checkLogin = await _employeeData.CheckLogin(emp.Username);
             if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))
@@ -47,7 +47,7 @@ namespace RestAPICrud.Controllers
                     Audience = "NgocSy",
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //Id of JWT
-                        new Claim(ClaimTypes.Name, checkLogin.Id.ToString()),
+                        new Claim("Id", checkLogin.Id.ToString()),
                         new Claim(ClaimTypes.Role, checkLogin.IdRoleNavigation.NameRole.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),

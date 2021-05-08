@@ -14,6 +14,8 @@ namespace RestAPICrud.Models
         public string ProfileImage { get; set; }
         public int IdRole { get; set; }
         public string Password { get; set; }
+        public bool IsDelete { get; set; }
+
         public virtual Roles IdRoleNavigation { get; set; }
         public virtual EmployeesInfo EmployeesInfo { get; set; }
     }
