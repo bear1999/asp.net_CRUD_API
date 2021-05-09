@@ -12,6 +12,8 @@ using RestAPICrud.Models;
 using System.Text;
 using FluentValidation.AspNetCore;
 using RestAPICrud.Helpers;
+using RestAPICrud.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestAPICrud
 {
@@ -37,10 +39,19 @@ namespace RestAPICrud
             //Add Db Connect String
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EmployeeContextConnectionString")));
 
-            //Add Empployee Service, Interface
+            //Add Empployee Interface, Service
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUploadFile, UploadFile>();
+            services.AddScoped<IAuthorizationHandler, IsDeleteHandler>();
+
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy("Staff", policy =>
+                    policy.RequireRole("Admin", "User"));
+                x.AddPolicy("isDelete", policy =>
+                    policy.Requirements.Add(new IsDelete(false)));
+            });
 
             //Config appsettings.json
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -48,12 +59,6 @@ namespace RestAPICrud
 
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.UTF8.GetBytes(appSettings.SerectKey);
-
-            services.AddAuthorization(x =>
-            {
-                x.AddPolicy("Staff", policy =>
-                    policy.RequireRole("Admin", "User"));
-            });
 
             services.AddAuthentication(x =>
             {

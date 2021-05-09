@@ -14,5 +14,6 @@ namespace RestAPICrud.Servcies.Employee
         Task<Employees> EditEmployee(Employees employee, EmployeesInfo empInfo);
         Task DeleteEmployee(Employees employee, EmployeesInfo empInfo);
         Task<Employees> CheckLogin(string username);
+        Task<bool> CheckIsDelete(Guid Id); 
     }
 }

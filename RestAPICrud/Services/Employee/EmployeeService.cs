@@ -88,5 +88,12 @@ namespace RestAPICrud.Servcies.Employee
         {
             return await _employeeContext.Employees.Include(x => x.IdRoleNavigation).SingleOrDefaultAsync(x => x.Username == username);
         }
+
+        public async Task<bool> CheckIsDelete(Guid id)
+        {
+            var employee = await _employeeContext.Employees
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return employee.IsDelete;
+        }
     }
 }

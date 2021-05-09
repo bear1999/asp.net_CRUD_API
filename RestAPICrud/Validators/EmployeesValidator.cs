@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace RestAPICrud.SchemeValidator
 {
-    public class Employees_Validator : AbstractValidator<Employees>
+    public class EmployeesValidator : AbstractValidator<Employees>
     {
-        public Employees_Validator()
+        public EmployeesValidator()
         {
             RuleFor(x => x.Username).NotEmpty();
             RuleFor(x => x.Password)

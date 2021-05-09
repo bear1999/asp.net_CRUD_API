@@ -20,20 +20,20 @@ namespace RestAPICrud.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IEmployeeService _employeeData;
+        private readonly IEmployeeService _employeeService;
         private readonly AppSettings _appSettings;
 
         //Contructor
         public LoginController(IEmployeeService employeeData, IOptions<AppSettings> appSettings)
         {
-            _employeeData = employeeData;
+            _employeeService = employeeData;
             _appSettings = appSettings.Value;
         }
 
         [HttpPost("api/[controller]")]
         public async Task<IActionResult> CheckLogin(LoginViewModel emp)
         {
-            var checkLogin = await _employeeData.CheckLogin(emp.Username);
+            var checkLogin = await _employeeService.CheckLogin(emp.Username);
             if (checkLogin != null && BC.Verify(emp.Password, checkLogin.Password))
             {
                 string tokenKey = _appSettings.SerectKey;
@@ -59,7 +59,7 @@ namespace RestAPICrud.Controllers
             return BadRequest(new { message = "Fail login!" });
         }
 
-        [Authorize]
+        [Authorize(Policy = "isDelete")]
         [HttpGet("api/[controller]")]
         public IActionResult GetValueToken()
         {
@@ -72,5 +72,16 @@ namespace RestAPICrud.Controllers
             }
             return NotFound();
         }
+
+        //[HttpGet("api/[controller]/{id}")]
+        //public async Task<IActionResult> Test(Guid Id)
+        //{
+        //    var employees = await _employeeService.CheckIsDelete(Id);
+        //    if (employees != null)
+        //    {
+        //        return Ok(employees.IsDelete);
+        //    }
+        //    return NotFound(new { message = $"Not found Employee with Id: {Id}" });
+        //}
     }
 }

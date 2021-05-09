@@ -34,7 +34,6 @@ namespace RestAPICrud.Controllers
             return Ok(await _employeeData.GetEmployees());
         }
 
-        [Authorize]
         [HttpGet]
         [Route("api/[controller]/{id}")]
         public async Task<IActionResult> GetEmployee(Guid Id)
